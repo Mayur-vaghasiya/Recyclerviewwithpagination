@@ -13,12 +13,13 @@ import java.util.List;
 @Dao
 public interface DataDao
 {
-
+    @Query("SELECT * FROM avtartable")
+    List<DataModel> getAll();
 
     @Insert
     void insert(DataModel data);
 
-    @Delete
-    void delete(DataModel data);
+    @Query("DELETE FROM avtartable")
+    void deleteAll();
 
 }

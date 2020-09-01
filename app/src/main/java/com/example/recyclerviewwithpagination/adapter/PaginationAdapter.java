@@ -31,13 +31,13 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private static final int ITEM = 0;
     private static final int LOADING = 1;
-    private ArrayList<DataModel> movieResults;
-    private ArrayList<DataModel> listOriginResult;
+    private List<DataModel> movieResults;
+    private List<DataModel> listOriginResult;
     private Context context;
 
     private boolean isLoadingAdded = false;
 
-    public PaginationAdapter(Context context, ArrayList<DataModel> movieResults) {
+    public PaginationAdapter(Context context, List<DataModel> movieResults) {
         this.context = context;
         this.movieResults = movieResults;
         // this.movieResults = new ArrayList<>();
@@ -46,7 +46,7 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
 
-    public ArrayList<DataModel> getMovies() {
+    public List<DataModel> getMovies() {
         return movieResults;
     }
 
@@ -163,7 +163,7 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         notifyItemInserted(movieResults.size() - 1);
     }
 
-    public void addAll(ArrayList<DataModel> moveResults) {
+    public void addAll(List<DataModel> moveResults) {
         for (DataModel result : moveResults) {
             add(result);
         }

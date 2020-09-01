@@ -28,6 +28,7 @@ import com.example.recyclerviewwithpagination.util.NetworkStatus;
 import com.example.recyclerviewwithpagination.util.PaginationScrollListener;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private int currentPage = PAGE_START;
 
     private ApiRequestData avtarService;
-    private ArrayList<DataModel> results;
+    private List<DataModel> results;
 
     AppDatabase database;
 
@@ -75,22 +76,24 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        adapter = new PaginationAdapter(MainActivity.this, results);
-        recyclerView.setAdapter(adapter);
+        setRecyclerViewData();
 
         recyclerView.addOnScrollListener(new PaginationScrollListener(linearLayoutManager) {
             @Override
             protected void loadMoreItems() {
-                isLoading = true;
-                currentPage += 1;
 
-                // mocking network delay for API call
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        loadNextPage();
-                    }
-                }, 1000);
+                if (NetworkStatus.getConnectivityStatusString(activity)) {
+                    isLoading = true;
+                    currentPage += 1;
+
+                    // mocking network delay for API call
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadNextPage();
+                        }
+                    }, 1000);
+                }
             }
 
             @Override
@@ -116,12 +119,9 @@ public class MainActivity extends AppCompatActivity {
             loadFirstPage();
 
         } else {
-
-
+            setRecyclerViewData();
             Toast.makeText(activity, "OffLine", Toast.LENGTH_LONG).show();
         }
-
-
 
         search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -138,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
 
             }
         });
@@ -157,9 +156,11 @@ public class MainActivity extends AppCompatActivity {
                 TOTAL_PAGES = response.body().getTotalPages();
                 results = fetchResults(response);
                 adapter.addAll(results);
+                database.dataDao().deleteAll();
                 for (DataModel result : results) {
                     database.dataDao().insert(result);
                 }
+                setRecyclerViewData();
                 progress.dismiss();
                 if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
                 else isLastPage = true;
@@ -175,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private ArrayList<DataModel> fetchResults(Response<EventModel> response) {
+    private List<DataModel> fetchResults(Response<EventModel> response) {
         EventModel eventModel = response.body();
         return eventModel.getData();
     }
@@ -208,7 +209,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
     /**
      * Performs a Retrofit call to the top rated movies API.
      * Same API call for Pagination.
@@ -217,5 +217,11 @@ public class MainActivity extends AppCompatActivity {
      */
     private Call<EventModel> callTopRatedMoviesApi() {
         return avtarService.getPageResult(currentPage);
+    }
+
+    private void setRecyclerViewData() {
+        results = database.dataDao().getAll();
+        adapter = new PaginationAdapter(activity, results);
+        recyclerView.setAdapter(adapter);
     }
 }

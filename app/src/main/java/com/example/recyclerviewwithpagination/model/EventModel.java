@@ -26,7 +26,7 @@ public class EventModel implements Serializable
     private Integer totalPages;
     @SerializedName("data")
     @Expose
-    private ArrayList<DataModel> data = null;
+    private List<DataModel> data = null;
     @SerializedName("ad")
     @Expose
     private Ad ad;
@@ -64,7 +64,7 @@ public class EventModel implements Serializable
         this.totalPages = totalPages;
     }
 
-    public ArrayList<DataModel> getData() {
+    public List<DataModel> getData() {
         return data;
     }
 

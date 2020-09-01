@@ -16,6 +16,7 @@ public class DataModel implements Serializable
     @SerializedName("id")
     @Expose
     private Integer id;
+
     @ColumnInfo(name = "email")
     @SerializedName("email")
     @Expose
