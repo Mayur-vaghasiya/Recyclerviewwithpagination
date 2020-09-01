@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Performs a Retrofit call to the top rated movies API.
+     * Performs a Retrofit call to the top rated User API.
      * Same API call for Pagination.
      * As {@link #currentPage} will be incremented automatically
      * by @{@link PaginationScrollListener} to load next page.
