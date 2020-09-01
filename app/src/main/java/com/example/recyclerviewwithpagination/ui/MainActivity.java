@@ -142,13 +142,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    //@Override
+//    protected void onResume() {
+//        super.onResume();
+//        if (NetworkStatus.getConnectivityStatusString(activity)) {
+//            loadFirstPage();
+//        } else {
+//            setRecyclerViewData();
+//            Toast.makeText(activity, "OffLine", Toast.LENGTH_LONG).show();
+//        }
+//    }
+
+//
 
     private void loadFirstPage() {
         Log.d(TAG, "loadFirstPage: ");
-        progress = new CustomProgressDialog(activity).
-                setStyle(CustomProgressDialog.Style.SPIN_INDETERMINATE)
-                .setDimAmount(0.5f)
-                .show();
+
         callTopRatedMoviesApi().enqueue(new Callback<EventModel>() {
             @Override
             public void onResponse(Call<EventModel> call, Response<EventModel> response) {
@@ -169,13 +178,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<EventModel> call, Throwable t) {
                 t.printStackTrace();
+
                 // TODO: 08/11/16 handle failure
             }
         });
 
     }
-
-
     private List<DataModel> fetchResults(Response<EventModel> response) {
         EventModel eventModel = response.body();
         return eventModel.getData();
@@ -202,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<EventModel> call, Throwable t) {
                 t.printStackTrace();
-                progress.dismiss();
+
 
                 Toast.makeText(MainActivity.this, "Sync Fail!", Toast.LENGTH_SHORT).show();
             }
