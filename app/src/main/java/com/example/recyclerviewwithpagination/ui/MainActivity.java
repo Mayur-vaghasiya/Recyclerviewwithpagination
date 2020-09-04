@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
                     database.dataDao().insert(result);
                 }
                 setRecyclerViewData();
-                progress.dismiss();
+
                 if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
                 else isLastPage = true;
             }
@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(Call<EventModel> call, Throwable t) {
                 t.printStackTrace();
 
-                // TODO: 08/11/16 handle failure
+
             }
         });
 
